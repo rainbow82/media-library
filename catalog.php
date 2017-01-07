@@ -1,21 +1,24 @@
 <?php
 $pageTitle = "Full Catalog";
-include("includes/header.php");
+$section = null;
 
 if(isset($_GET["cat"]))
 {
     if($_GET["cat"] == "books")
     {
         $pageTitle = "Books";
-    }elseif ($GET[cat] == "music")
-    {
-        $pageTitle = "music";
-    }elseif ($GET[cat] == "Movies")
+        $section = "books";
+    }elseif($_GET["cat"] == "movies")
     {
         $pageTitle = "Movies";
+        $section = "movies";
+    }elseif($_GET["cat"] == "music")
+    {
+        $pageTitle = "Music";
+        $section = "music";
     }
 }
-
+include("includes/header.php");
 ?>
 
 <div class="section page">

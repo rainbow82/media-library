@@ -1,5 +1,6 @@
 <?php
 $pageTitle = "Home";
+$section = null;
 include ("includes/header.php"); ?>
 
 		<div class="section catalog random">
