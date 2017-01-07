@@ -29,8 +29,9 @@ include("includes/header.php");
         <h1><?php echo $pageTitle; ?></h1>
         <ul class="items">
             <?php
-            foreach ($catalog as $id => $item) {
-                echo getItemHtml($id, $item);
+            $categories = arrayCategory($catalog, $section);
+            foreach ($categories as $id) {
+                echo getItemHtml($id, $catalog[$id]);
             } ?>
         </ul>
     </div>
