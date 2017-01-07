@@ -35,9 +35,9 @@ include("includes/header.php");
         echo $pageTitle; ?></h1>
         <ul class="items">
             <?php
-            $categories = arrayCategory($catalog, $section);
+            $categories = array_category($catalog, $section);
             foreach ($categories as $id) {
-                echo getItemHtml($id, $catalog[$id]);
+                echo get_item_html($id, $catalog[$id]);
             } ?>
         </ul>
     </div>
