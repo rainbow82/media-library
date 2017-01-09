@@ -11,7 +11,7 @@ include ("includes/header.php");?>
     <div class="wrapper">
         <h1>Suggest a Media Item</h1>
         <p>Am I missing something? Let me know by completing the form.</p>
-        <form method="post">
+        <form method="post" action="process.php">
             <table>
                 <tr>
                     <th><label for="name">Name</label></th>
