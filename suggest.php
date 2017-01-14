@@ -18,6 +18,8 @@ if($_SERVER["REQUEST_METHOD"]  == "POST")
         exit;
     }
 
+    require("includes/phpmailer/class.phpmailer.php");
+
     echo "<pre>";
     $email_body = "";
     $email_body .= "Name: " . $name . "\n";
