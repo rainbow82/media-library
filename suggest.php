@@ -13,53 +13,50 @@ if($_SERVER["REQUEST_METHOD"]  == "POST")
 
     if($name == "" || $email == "" || $category == "" || $title == "")
     {
-        echo "Please fill in the required fields: Name, Email, Category, and Title";
-        exit;
+        $error_message = "Please fill in the required fields: Name, Email, Category, and Title";
     }
 
-    if($_POST["address"] != "")
+    if(!isset($error_message) && $_POST["address"] != "")
     {
-        echo "Bad form input";
-        exit;
+        $error_message = "Bad form input";
     }
 
     require("includes/phpmailer/class.phpmailer.php");
 
     $mail = new PHPMailer;
-    if(!$mail->ValidateAddress($email))
+    if(!isset($error_message) && !$mail->ValidateAddress($email))
     {
-        echo "Invlid Email Address";
-        exit;
+        $error_message = "Invlid Email Address";
     }
 
+    if(!isset ($error_message))
+    {
+        $email_body = "";
+        $email_body .= "Name: " . $name . "\n";
+        $email_body .= "Email: " . $email . "\n";
+        $email_body .= "Suggested Item:\n";
+        $email_body .= "Category: " . $category . "\n";
+        $email_body .= "Title: " . $title . "\n";
+        $email_body .= "Format: " . $format . "\n";
+        $email_body .= "Genre: " . $genre . "\n";
+        $email_body .= "Year: " . $year . "\n";
+        $email_body .= "Details: " . $details . "\n";
 
-    $email_body = "";
-    $email_body .= "Name: " . $name . "\n";
-    $email_body .= "Email: " . $email . "\n";
-    $email_body .= "Suggested Item:\n";
-    $email_body .= "Category: " . $category . "\n";
-    $email_body .= "Title: " . $title . "\n";
-    $email_body .= "Format: " . $format . "\n";
-    $email_body .= "Genre: " . $genre . "\n";
-    $email_body .= "Year: " . $year . "\n";
-    $email_body .= "Details: " . $details . "\n";
+        $mail->setFrom($email, $name);
+        $mail->addAddress('shannonbeach1982@gmail.com', 'Shannon');     // Add a recipient
 
-    $mail->setFrom($email, $name);
-    $mail->addAddress('shannonbeach1982@gmail.com', 'Shannon');     // Add a recipient
+        $mail->isHTML(false);                                  // Set email format to HTML
 
-    $mail->isHTML(false);                                  // Set email format to HTML
+        $mail->Subject = 'Personal Media Library Suggestion from ' .$name;
+        $mail->Body    = $email_body;
 
-    $mail->Subject = 'Personal Media Library Suggestion from ' .$name;
-    $mail->Body    = $email_body;
-
-    if(!$mail->send()) {
-        echo 'Message could not be sent.';
-        echo 'Mailer Error: ' . $mail->ErrorInfo;
-        exit;
+        if($mail->send()) {
+            header("location:suggest.php?status=thanks");
+            exit;
+        }
+        $error_message = 'Message could not be sent.';
+        $error_message .= 'Mailer Error: ' . $mail->ErrorInfo;
     }
-
-
-    header("location:suggest.php?status=thanks");
 }
 
 $pageTitle = "Suggest a Media Item";
@@ -69,7 +66,9 @@ include ("includes/header.php");?>
 <div class="section page">
     <div class="wrapper">
         <h1>Suggest a Media Item</h1>
-        <p>Am I missing something? Let me know by completing the form.</p>
+        <!-- display errro message if form not filled out correctly-->
+        <?php if(isset($error_message)){echo "<p class='message'>" .$error_message. "</p>";}
+        else{echo "<p>Am I missing something? Let me know by completing the form.</p>"}?>
         <form method="post" action="suggest.php">
             <table>
                 <tr>
